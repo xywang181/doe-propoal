@@ -1,0 +1,112 @@
+\documentclass[11pt,titlepage]{report}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Main file for the proposal document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%% Setup packages, style, etc. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{preamble} %% Use the same preamble as for the project summary
+
+%%%%% Read acronym definitions if available %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\IfFileExists{acronyms.tex}{%
+  \input{acronyms}}{%
+  \typeout{Info: acronyms.tex not found}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% Check for needed configuration info %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\IfFileExists{CONFIG-proposal.tex}{%
+    \input{CONFIG-proposal}}{\typeout{!! CONFIG-proposal.tex not found}}
+\IfFileExists{CONFIG-roles.tex}{%
+    \input{CONFIG-roles}}{\typeout{!! CONFIG-roles.tex not found}}
+\IfFileExists{CONFIG-institutions.csv}{%
+      \input{utilities/make-institution-acronyms.tex}
+    }{\typeout{!! CONFIG-institutions.csv not found}}
+\IfFileExists{CONFIG-investigators.csv}{%
+    \input{utilities/make-pi-acronyms.tex}
+    }{\typeout{!! CONFIG-investigators.csv not found}}
+
+\pagenumbering{roman}
+
+%%%%% Frontmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{frontmatter/FRONTMATTER}
+
+%%%%% Table of Contents %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\hypertarget{toc}{}  %% Use this instead of phantomsection to get link
+                     %% to beginning of TOC instead of
+                     %% end. (Supposedly) requires clearpage before.
+\tableofcontents
+
+%%%%% Change page number style %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Force new page, otherwise style change might affect previous page
+\newpage
+\pagenumbering{arabic}
+\pagestyle{fancy}
+
+%%%%% Reset acronym expansion %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\IfFileExists{acronyms.tex}{\glsresetall[acronym]}{}
+
+%%%%% Narrative %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{narrative/NARRATIVE}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% START APPENDICES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\appendix
+\renewcommand{\thechapter}{\arabic{chapter}}
+\phantomsection
+\addappheadtotoc
+
+% Update chapter headings to indicate that they're appendices
+\titleformat{\chapter}[hang]
+   {\normalfont\Huge\bfseries}{\chaptertitlename~\thechapter.}{10pt}{\Huge}
+
+%%%%% Reset acronym expansion %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Uncomment if you want to reset acronym expansion for the appendices
+% To reset expansion for *every* appendix, you'll need to copy this.
+
+% \IfFileExists{acronyms.tex}{\glsresetall[acronym]}{}
+
+%%%%% 1. Bibliography %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\bibname}{References Cited}
+\bibliographystyle{bib/cv}
+
+% Multiple bib files are possible.  Format is comma separated list,
+% relative to this directory, without .bib suffix.  So bib/a,bib/b,...
+\bibliography{bib/proposal}
+
+%%%%% 2. Facilities %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{facilities/FACILITIES}
+
+%%%%% 3. Equipment %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{equipment/EQUIPMENT}
+
+%%%%% 4. Data Management Plan %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{data-plan/DATA-PLAN}
+
+%%%%% 5. PIER Plan %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{pier-plan/PIER-PLAN}
+
+%%%%% 6. Other Attachments %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% % It is rare that other attachments are needed.
+% \IfFileExists{other-attachments.tex}{\input{other-attachments}}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,0 +1,23 @@
+TODO: THIS FILE IS OUT OF DATE AND NEEDS TO BE UPDATED
+
+Possible improvements to the proposal template system
+
+* Bring back different content builds (full, technical-only, etc.).
+  But make the full build the default.
+
+* Autogeneration for personnel does not handle the case of (last) name
+  collisions.
+
+* More modern bst file to use?
+
+* Figure out how to use latexdiff
+
+* Problems with acronym expansion when generating standalone abstract.
+  Seems that adding \typeout statements somehow effect results, but of
+  course that shouldn't be.
+
+* Grants.gov lately requires a cover page in front of narrative.
+  Creation could be at least partly automated.
+
+* Acronyms are not a good solution for some institution names (when
+  the full name and the short version are too close).
